@@ -1,0 +1,30 @@
+ private void ymNewPage(StringBuilder sbTitle, bool bNewPage = true)
+        {
+            try
+            {
+                CT_P m_p = m_Docx.Document.body.AddNewP();
+                m_p.AddNewPPr().AddNewJc().val = ST_Jc.center;//段落水平居中          
+                m_p.AddNewPPr().AddNewSpacing().line = "400";//单倍为默认值240不需设置，1.5倍=240X1.5=360，2倍=240X2=480
+                m_p.AddNewPPr().AddNewSpacing().lineRule = ST_LineSpacingRule.auto;//atLeast=最小 auto=自动 exact=精确 nil=零
+                                                                                   //
+                XWPFParagraph para = new XWPFParagraph(m_p, m_Docx);
+                para.BorderTop = Borders.Nil;
+                para.Alignment = ParagraphAlignment.CENTER;
+                //
+                XWPFRun r0 = para.CreateRun();
+                if (bNewPage)
+                {
+                    r0.AddBreak();
+                }//新的一页
+                r0.IsBold = true;
+                r0.FontSize = 12;
+                r0.SetFontFamily(strFont, FontCharRange.None);//设置字体
+                r0.SetColor("black");
+                r0.SetText(sbTitle.ToString());
+                //r0.SetUnderline(UnderlinePatterns.None);
+            }
+            catch (Exception ex)
+            {
+                logErr(System.Reflection.MethodBase.GetCurrentMethod().Name, ex);
+            }
+        }
